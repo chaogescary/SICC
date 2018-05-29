@@ -86,6 +86,14 @@
     from tb_specification
     where id = #{id,jdbcType=BIGINT}
   </select>
+  
+  <!-- <<<<<<<<<<<<<<<<<< -->
+  <!-- 支持前端select2展示 -->
+  <select id="selectOptionList"  resultType="java.util.Map" >
+    select id,spec_name as text from tb_specification
+  </select>
+  <!-- <<<<<<<<<<<<<<<<<< -->
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from tb_specification
     where id = #{id,jdbcType=BIGINT}
@@ -97,6 +105,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.pinyougou.pojo.TbSpecification" >
+  	<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
+  	<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+		SELECT LAST_INSERT_ID() AS id
+	</selectKey>
+  	<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
     insert into tb_specification (id, spec_name)
     values (#{id,jdbcType=BIGINT}, #{specName,jdbcType=VARCHAR})
   </insert>
