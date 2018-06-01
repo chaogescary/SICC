@@ -1,7 +1,6 @@
 package com.pinyougou.sellergoods.service;
 import java.util.List;
-import com.pinyougou.pojo.TbGoods;
-import com.pinyougou.pojogroup.Goods;
+import com.pinyougou.pojo.TbItemCat;
 
 import entity.PageResult;
 /**
@@ -9,13 +8,13 @@ import entity.PageResult;
  * @author Administrator
  *
  */
-public interface GoodsService {
+public interface ItemCatService {
 
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
-	public List<TbGoods> findAll();
+	public List<TbItemCat> findAll();
 	
 	
 	/**
@@ -25,21 +24,16 @@ public interface GoodsService {
 	public PageResult findPage(int pageNum,int pageSize);
 	
 	
-//	public void add(TbGoods goods);
-	/** 
-	* @date 2018年5月30日下午8:21:03
-	* @author Sichao
-	*
-	* @Description: 增加
-	* 修改为‘大’对象 
-	*/ 
-	public void add(Goods goods);
+	/**
+	 * 增加
+	*/
+	public void add(TbItemCat itemCat);
 	
 	
 	/**
 	 * 修改
 	 */
-	public void update(TbGoods goods);
+	public void update(TbItemCat itemCat);
 	
 
 	/**
@@ -47,7 +41,7 @@ public interface GoodsService {
 	 * @param id
 	 * @return
 	 */
-	public TbGoods findOne(Long id);
+	public TbItemCat findOne(Long id);
 	
 	
 	/**
@@ -62,6 +56,14 @@ public interface GoodsService {
 	 * @param pageSize 每页记录数
 	 * @return
 	 */
-	public PageResult findPage(TbGoods goods, int pageNum,int pageSize);
+	public PageResult findPage(TbItemCat itemCat, int pageNum,int pageSize);
+	
+	/** 
+	* @date 2018年5月30日下午7:47:53
+	* @author Sichao
+	*
+	* @Description: 商品分类查询 
+	*/ 
+	public List<TbItemCat> findByParentId(Long parentId);
 	
 }

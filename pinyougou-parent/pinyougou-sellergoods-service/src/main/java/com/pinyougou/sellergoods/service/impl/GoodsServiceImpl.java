@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.pinyougou.mapper.TbGoodsDescMapper;
 import com.pinyougou.mapper.TbGoodsMapper;
 import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojo.TbGoodsExample;
 import com.pinyougou.pojo.TbGoodsExample.Criteria;
+import com.pinyougou.pojogroup.Goods;
 import com.pinyougou.sellergoods.service.GoodsService;
 
 import entity.PageResult;
@@ -24,6 +26,10 @@ public class GoodsServiceImpl implements GoodsService {
 
 	@Autowired
 	private TbGoodsMapper goodsMapper;
+	
+	@Autowired
+	private TbGoodsDescMapper goodsDescMapper;
+
 	
 	/**
 	 * 查询全部
@@ -43,12 +49,20 @@ public class GoodsServiceImpl implements GoodsService {
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
-	/**
-	 * 增加
-	 */
+
+	/** 
+	* @date 2018年5月30日下午8:23:12
+	* @author Sichao
+	*
+	* @Description: 增加
+	* 增加一个大对象 
+	*/ 
 	@Override
-	public void add(TbGoods goods) {
-		goodsMapper.insert(goods);		
+	public void add(Goods goods) {
+		goods.getGoods().setAuditStatus("0");//设置未申请状态
+		goodsMapper.insert(goods.getGoods());		
+		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId());//设置ID
+		goodsDescMapper.insert(goods.getGoodsDesc());//插入商品扩展数据
 	}
 
 	
