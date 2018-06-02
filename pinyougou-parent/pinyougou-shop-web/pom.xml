@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>pinyougou-shop-web</artifactId>
 	<packaging>war</packaging>
-
+		
 	<build>
 		<plugins>
 			<plugin>

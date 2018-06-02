@@ -9,23 +9,23 @@ import entity.PageResult;
  * @author Administrator
  *
  */
-public interface GoodsService {
+ public interface GoodsService {
 
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
-	public List<TbGoods> findAll();
+	 List<TbGoods> findAll();
 	
 	
 	/**
 	 * 返回分页列表
 	 * @return
 	 */
-	public PageResult findPage(int pageNum,int pageSize);
+	 PageResult findPage(int pageNum,int pageSize);
 	
 	
-//	public void add(TbGoods goods);
+//	 void add(TbGoods goods);
 	/** 
 	* @date 2018年5月30日下午8:21:03
 	* @author Sichao
@@ -33,13 +33,13 @@ public interface GoodsService {
 	* @Description: 增加
 	* 修改为‘大’对象 
 	*/ 
-	public void add(Goods goods);
+	 void add(Goods goods);
 	
 	
 	/**
 	 * 修改
 	 */
-	public void update(TbGoods goods);
+	 void update(TbGoods goods);
 	
 
 	/**
@@ -47,14 +47,14 @@ public interface GoodsService {
 	 * @param id
 	 * @return
 	 */
-	public TbGoods findOne(Long id);
+	 TbGoods findOne(Long id);
 	
 	
 	/**
 	 * 批量删除
 	 * @param ids
 	 */
-	public void delete(Long [] ids);
+	 void delete(Long [] ids);
 
 	/**
 	 * 分页
@@ -62,6 +62,6 @@ public interface GoodsService {
 	 * @param pageSize 每页记录数
 	 * @return
 	 */
-	public PageResult findPage(TbGoods goods, int pageNum,int pageSize);
+	 PageResult findPage(TbGoods goods, int pageNum,int pageSize);
 	
 }

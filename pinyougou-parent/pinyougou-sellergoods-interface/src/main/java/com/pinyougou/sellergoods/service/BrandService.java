@@ -10,32 +10,32 @@ import entity.PageResult;
  * @author Administrator
  *
  */
-public interface BrandService {
+ public interface BrandService {
 
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
-	public List<TbBrand> findAll();
+	 List<TbBrand> findAll();
 	
 	
 	/**
 	 * 返回分页列表
 	 * @return
 	 */
-	public PageResult findPage(int pageNum,int pageSize);
+	 PageResult findPage(int pageNum,int pageSize);
 	
 	
 	/**
 	 * 增加
 	*/
-	public void add(TbBrand brand);
+	 void add(TbBrand brand);
 	
 	
 	/**
 	 * 修改
 	 */
-	public void update(TbBrand brand);
+	 void update(TbBrand brand);
 	
 
 	/**
@@ -43,14 +43,14 @@ public interface BrandService {
 	 * @param id
 	 * @return
 	 */
-	public TbBrand findOne(Long id);
+	 TbBrand findOne(Long id);
 	
 	
 	/**
 	 * 批量删除
 	 * @param ids
 	 */
-	public void delete(Long [] ids);
+	 void delete(Long [] ids);
 
 	/**
 	 * 分页
@@ -58,7 +58,7 @@ public interface BrandService {
 	 * @param pageSize 每页记录数
 	 * @return
 	 */
-	public PageResult findPage(TbBrand brand, int pageNum,int pageSize);
+	 PageResult findPage(TbBrand brand, int pageNum,int pageSize);
 	
 	/** 
 	* @date 2018年5月29日上午11:52:12

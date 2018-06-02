@@ -8,32 +8,32 @@ import entity.PageResult;
  * @author Administrator
  *
  */
-public interface SpecificationOptionService {
+ public interface SpecificationOptionService {
 
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
-	public List<TbSpecificationOption> findAll();
+	 List<TbSpecificationOption> findAll();
 	
 	
 	/**
 	 * 返回分页列表
 	 * @return
 	 */
-	public PageResult findPage(int pageNum,int pageSize);
+	 PageResult findPage(int pageNum,int pageSize);
 	
 	
 	/**
 	 * 增加
 	*/
-	public void add(TbSpecificationOption specificationOption);
+	 void add(TbSpecificationOption specificationOption);
 	
 	
 	/**
 	 * 修改
 	 */
-	public void update(TbSpecificationOption specificationOption);
+	 void update(TbSpecificationOption specificationOption);
 	
 
 	/**
@@ -41,14 +41,14 @@ public interface SpecificationOptionService {
 	 * @param id
 	 * @return
 	 */
-	public TbSpecificationOption findOne(Long id);
+	 TbSpecificationOption findOne(Long id);
 	
 	
 	/**
 	 * 批量删除
 	 * @param ids
 	 */
-	public void delete(Long [] ids);
+	 void delete(Long [] ids);
 
 	/**
 	 * 分页
@@ -56,6 +56,6 @@ public interface SpecificationOptionService {
 	 * @param pageSize 每页记录数
 	 * @return
 	 */
-	public PageResult findPage(TbSpecificationOption specificationOption, int pageNum,int pageSize);
+	 PageResult findPage(TbSpecificationOption specificationOption, int pageNum,int pageSize);
 	
 }

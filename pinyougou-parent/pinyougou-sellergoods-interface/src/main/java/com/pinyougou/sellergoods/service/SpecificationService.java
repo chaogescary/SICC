@@ -11,32 +11,32 @@ import entity.PageResult;
  * @author Administrator
  *
  */
-public interface SpecificationService {
+ public interface SpecificationService {
 
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
-	public List<TbSpecification> findAll();
+	 List<TbSpecification> findAll();
 	
 	
 	/**
 	 * 返回分页列表
 	 * @return
 	 */
-	public PageResult findPage(int pageNum,int pageSize);
+	 PageResult findPage(int pageNum,int pageSize);
 	
 	
 	/**
 	 * 增加
 	*/
-	public void add(TbSpecification specification);
+	 void add(TbSpecification specification);
 	
 	
 	/**
 	 * 修改
 	 */
-	public void update(TbSpecification specification);
+	 void update(TbSpecification specification);
 	
 
 	/**
@@ -44,14 +44,14 @@ public interface SpecificationService {
 	 * @param id
 	 * @return
 	 */
-	public TbSpecification findOne(Long id);
+	 TbSpecification findOne(Long id);
 	
 	
 	/**
 	 * 批量删除
 	 * @param ids
 	 */
-	public void delete(Long [] ids);
+	 void delete(Long [] ids);
 
 	/**
 	 * 分页
@@ -59,7 +59,7 @@ public interface SpecificationService {
 	 * @param pageSize 每页记录数
 	 * @return
 	 */
-	public PageResult findPage(TbSpecification specification, int pageNum,int pageSize);
+	 PageResult findPage(TbSpecification specification, int pageNum,int pageSize);
 	
 	/** 
 	* @date 2018年5月28日下午7:18:05
@@ -67,7 +67,7 @@ public interface SpecificationService {
 	*
 	* @Description: 新增的方法 
 	*/ 
-	public void add(Specification specification);
+	 void add(Specification specification);
 	
 	/** 
 	* @date 2018年5月28日下午7:24:42
@@ -75,7 +75,7 @@ public interface SpecificationService {
 	*
 	* @Description: 通过规格ID查询规格和规格选项 
 	*/ 
-	public Specification findOneObject(Long id);
+	 Specification findOneObject(Long id);
 	
 	/** 
 	* @date 2018年5月28日下午7:57:29
@@ -83,7 +83,7 @@ public interface SpecificationService {
 	*
 	* @Description: TODO 
 	*/ 
-	public void update(Specification specification);
+	 void update(Specification specification);
 	
 	/** 
 	* @date 2018年5月29日上午11:52:46
