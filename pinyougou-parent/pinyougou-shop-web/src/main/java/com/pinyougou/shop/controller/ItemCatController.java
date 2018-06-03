@@ -3,6 +3,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -119,7 +120,8 @@ public class ItemCatController {
 	* @Description: 商品分类查询 
 	*/ 
 	@RequestMapping("/findByParentId")
-	public List<TbItemCat> findByParentId(Long parentId){				
+	public List<TbItemCat> findByParentId(
+			@RequestParam(value="parentId",required=false,defaultValue="0") Long parentId){				
 		return itemCatService.findByParentId(parentId);
 	}
 

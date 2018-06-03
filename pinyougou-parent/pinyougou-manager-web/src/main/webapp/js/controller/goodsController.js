@@ -110,7 +110,7 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
 	$scope.search=function(page,rows){			
 		goodsService.search(page,rows,$scope.searchEntity).success(
 			function(response){
-				$scope.listt=response.rows;
+				$scope.list=response.rows;	
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
 			}			
 		);
@@ -269,8 +269,8 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
 	  			function(response){							
 	  				for(var i=0;i<response.length;i++){
 	  					$scope.itemCatList[response[i].id]=response[i].name;
+	  				}
 	  			}
-	  		}
 	  	);
     }
 
@@ -289,14 +289,18 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
     	}			
     }
     
-    //全盘初始化
-    $scope.init = function(){
-		$scope.entity = {"goodsDesc":{itemImages:[],specificationItems:[]},"itemList":[]};
-		$scope.selectItemCat1List();
-		$scope.status = ["未申请","申请中","审核通过","已驳回"];
-		$scope.itemCatList = [];
-		$scope.findItemCatList();
-		$scope.findOne();
+  //更改状态
+	$scope.updateStatus=function(status){		
+		goodsService.updateStatus($scope.selectIds,status).success(
+			function(response){
+				if(response.success){//成功
+					$scope.reloadList();//刷新列表
+					$scope.selectIds=[];//清空ID集合
+				}else{
+					alert(response.message);
+				}
+			}
+		);		
 	}
     
 });	

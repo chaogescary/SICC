@@ -1,4 +1,4 @@
-package com.pinyougou.shop.controller;
+package com.pinyougou.manager.controller;
 import java.util.List;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -124,30 +124,12 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/search")
-	public PageResult search(
-			@RequestBody TbGoods goods, int page, int rows  ){
+	public PageResult search(@RequestBody TbGoods goods, int page, int rows  ){
 				//获取商家ID
 				String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
 				//添加查询条件 
 				goods.setSellerId(sellerId);		
-		return goodsService.findPage(goods, page, rows);
-	}
-	
-	/** 
-	* @date 2018年6月3日下午3:21:44
-	* @author Sichao
-	*
-	* @Description: 批量状态更新 
-	*/ 
-	@RequestMapping("/updateStatus")
-	public Result updateStatus(Long[] ids, String status){		
-		try {
-			goodsService.updateStatus(ids, status);
-			return new Result(true, "成功");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new Result(false, "失败");
-		}
+		return goodsService.findPage(goods, page, rows);		
 	}
 	
 }

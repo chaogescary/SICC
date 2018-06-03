@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
@@ -121,20 +122,21 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 	}
 
 		@Override
-		public List<Map> findSpecList(Long id) {
+		public List<Map> findSpecList(
+				@RequestParam(value="id",required=false,defaultValue="35") Long id) {
 			//查询模板
 			TbTypeTemplate typeTemplate = typeTemplateMapper.selectByPrimaryKey(id);
 			
-			List<Map> list = JSON.parseArray(typeTemplate.getSpecIds(), Map.class)  ;
-			for(Map map:list){
-				//查询规格选项列表
-				TbSpecificationOptionExample example=new TbSpecificationOptionExample();
-				com.pinyougou.pojo.TbSpecificationOptionExample.Criteria criteria = example.createCriteria();
-				criteria.andSpecIdEqualTo( new Long( (Integer)map.get("id") ) );
-				List<TbSpecificationOption> options = specificationOptionMapper.selectByExample(example);
-				map.put("options", options);
-			}		
-			return list;
+			List<Map> list = JSON.parseArray(typeTemplate.getSpecIds(), Map.class);
+				for(Map map:list){
+					//查询规格选项列表
+					TbSpecificationOptionExample example=new TbSpecificationOptionExample();
+					com.pinyougou.pojo.TbSpecificationOptionExample.Criteria criteria = example.createCriteria();
+					criteria.andSpecIdEqualTo( new Long( (Integer)map.get("id") ) );
+					List<TbSpecificationOption> options = specificationOptionMapper.selectByExample(example);
+					map.put("options", options);
+				}		
+				return list;
 		}
 	
 }

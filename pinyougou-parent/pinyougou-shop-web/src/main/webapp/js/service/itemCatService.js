@@ -11,8 +11,9 @@ app.service('itemCatService',function($http){
 	}
 	//查询实体
 	this.findOne=function(id){
-		return $http.get('../itemCat/findOne.do?id='+id);
+			return $http.get('../itemCat/findOne.do?id='+id);
 	}
+	
 	//增加 
 	this.add=function(entity){
 		return  $http.post('../itemCat/add.do',entity );
@@ -32,7 +33,7 @@ app.service('itemCatService',function($http){
 	
 	//根据上级ID查询下级列表
 	this.findByParentId=function(parentId){
-		return $http.get('../itemCat/findByParentId.do?parentId='+parentId);	
+			return $http.get('../itemCat/findByParentId.do?parentId='+parentId);
 	}
 
 });

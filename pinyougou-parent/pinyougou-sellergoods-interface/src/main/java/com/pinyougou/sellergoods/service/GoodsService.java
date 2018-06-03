@@ -39,7 +39,7 @@ import entity.PageResult;
 	/**
 	 * 修改
 	 */
-	 void update(TbGoods goods);
+	 void update(Goods goods);
 	
 
 	/**
@@ -47,7 +47,8 @@ import entity.PageResult;
 	 * @param id
 	 * @return
 	 */
-	 TbGoods findOne(Long id);
+	 /*TbGoods findOne(Long id);*/
+	 Goods findOne(Long id);
 	
 	
 	/**
@@ -64,4 +65,12 @@ import entity.PageResult;
 	 */
 	 PageResult findPage(TbGoods goods, int pageNum,int pageSize);
 	
+	 /** 
+	* @date 2018年6月3日下午3:19:40
+	* @author Sichao
+	*
+	* @Description: 批量修改状态 
+	*/ 
+	void updateStatus(Long []ids,String status);
+	 
 }
