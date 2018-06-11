@@ -1,14 +1,23 @@
 package com.pinyougou.manager.controller;
 import java.util.List;
 
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.page.service.ItemPageService;
+import com.alibaba.fastjson.JSON;
 import com.pinyougou.pojo.TbGoods;
+import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojogroup.Goods;
 import com.pinyougou.sellergoods.service.GoodsService;
 
@@ -101,15 +110,34 @@ public class GoodsController {
 		return goodsService.findOne(id);		
 	}
 	
+	@Autowired
+	private Destination queueSolrDeleteDestination;//用户在索引库中删除记录
+
+	@Autowired
+	private Destination topicPageDeleteDestination;//用于删除静态网页的消息
+
 	/**
 	 * 批量删除
 	 * @param ids
 	 * @return
 	 */
 	@RequestMapping("/delete")
-	public Result delete(Long [] ids){
+	public Result delete(final Long [] ids){
 		try {
-			goodsService.delete(ids);
+			goodsService.delete(ids);			
+			jmsTemplate.send(queueSolrDeleteDestination, new MessageCreator() {		
+				@Override
+				public Message createMessage(Session session) throws JMSException {	
+					return session.createObjectMessage(ids);
+				}
+			});
+			//删除页面
+			jmsTemplate.send(topicPageDeleteDestination, new MessageCreator() {		
+				@Override
+				public Message createMessage(Session session) throws JMSException {	
+					return session.createObjectMessage(ids);
+				}
+			});	
 			return new Result(true, "删除成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,16 +161,35 @@ public class GoodsController {
 		return goodsService.findPage(goods, page, rows);		
 	}
 	
-	@Reference(timeout=40000)
-	private ItemPageService itemPageService;
-	/**
-	 * 生成静态页（测试）
-	 * @param goodsId
-	 */
-	@RequestMapping("/genHtml")
-	public void genHtml(Long goodsId){
-		itemPageService.genItemHtml(goodsId);	
-	}
-
+	@Autowired
+	private Destination queueSolrDestination;//用于发送solr导入的消息
 	
+	@Autowired
+	private Destination topicPageDestination;
+
+	@Autowired
+	private JmsTemplate jmsTemplate;
+
+	@RequestMapping("/updateStatus")
+	public Result updateStatus(Long[] ids,String status){
+		try {
+			goodsService.updateStatus(ids, status);
+			//按照SPU ID查询 SKU列表(状态为1)		
+			if(status.equals("1")){//审核通过
+				//静态页生成
+				for(final Long goodsId:ids){
+					jmsTemplate.send(topicPageDestination, new MessageCreator() {						
+						@Override
+						public Message createMessage(Session session) throws JMSException {							
+							return session.createTextMessage(goodsId+"");
+						}
+					});
+				}				
+			}		
+			return new Result(true, "修改状态成功"); 
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, "修改状态失败");
+		}
+	}
 }
