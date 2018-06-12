@@ -58,3 +58,4 @@ dependency-reduced-pom.xml
 buildNumber.properties
 /.recommenders/
 /itcast_sms/src/main/resources/application.properties
+/alicom-dysms-api/src/main/java/SmsDemo.java
