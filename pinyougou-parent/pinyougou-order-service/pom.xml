@@ -5,12 +5,17 @@
     <artifactId>pinyougou-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>pinyougou-cart-web</artifactId>
+  <artifactId>pinyougou-order-service</artifactId>
   <packaging>war</packaging>
   <dependencies>
   	<dependency>
   		<groupId>com.pinyougou</groupId>
-  		<artifactId>pinyougou-cart-interface</artifactId>
+  		<artifactId>pinyougou-order-interface</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.pinyougou</groupId>
+  		<artifactId>pinyougou-dao</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
@@ -18,18 +23,8 @@
   		<artifactId>pinyougou-common</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
-  	<dependency>
-  		<groupId>com.pinyougou</groupId>
-  		<artifactId>pinyougou-user-interface</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>com.pinyougou</groupId>
-  		<artifactId>pinyougou-order-interface</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
   </dependencies>
-    
+  
     <build>
 		<plugins>
 			<plugin>
@@ -38,12 +33,12 @@
 				<version>2.2</version>
 				<configuration>
 					<!-- 指定端口 -->
-					<port>9107</port>
+					<port>9008</port>
 					<!-- 请求路径 -->
 					<path>/</path>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	
+  
 </project>
