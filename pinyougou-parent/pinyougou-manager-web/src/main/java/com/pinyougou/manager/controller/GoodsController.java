@@ -1,12 +1,14 @@
 package com.pinyougou.manager.controller;
 import java.util.List;
 
-import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
+import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.alibaba.fastjson.JSON;
 import com.pinyougou.pojo.TbGoods;
-import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojogroup.Goods;
 import com.pinyougou.sellergoods.service.GoodsService;
 
@@ -35,6 +35,28 @@ public class GoodsController {
 	@Reference
 	private GoodsService goodsService;
 	
+	@Autowired
+	private JmsTemplate jmsTemplate;
+	
+	/**
+	 * @Autowired 和 @Qualifier 结合使用时，自动注入的策略就从 byType 转变成 byName 
+	 */
+	@Autowired
+	@Qualifier("queueSolrCreateDestination")
+	private ActiveMQQueue queueSolrCreateDestination;
+	
+	@Autowired
+	@Qualifier("queueSolrDeleteDestination")
+	private ActiveMQQueue queueSolrDeleteDestination;
+	
+	@Autowired
+	@Qualifier("topicPageCreateDestination")
+	private ActiveMQTopic topicPageCreateDestination;
+	
+	@Autowired
+	@Qualifier("topicPageDeleteDestination")
+	private ActiveMQTopic topicPageDeleteDestination;
+	
 	/**
 	 * 返回全部列表
 	 * @return
@@ -46,7 +68,7 @@ public class GoodsController {
 	
 	
 	/**
-	 * 返回全部列表
+	 * 返回全部分页列表
 	 * @return
 	 */
 	@RequestMapping("/findPage")
@@ -54,18 +76,15 @@ public class GoodsController {
 		return goodsService.findPage(page, rows);
 	}
 	
-	/** 
-	* @date 2018年5月30日下午8:25:56
-	* @author Sichao
-	*
-	* @Description: 增加
-	* 增加‘大’对象 
-	*/ 
+	/**
+	 * 增加
+	 * @param goods
+	 * @return
+	 */
 	@RequestMapping("/add")
 	public Result add(@RequestBody Goods goods){
-		//获取登录名
-		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
-		goods.getGoods().setSellerId(sellerId);//设置商家ID
+		String seller = SecurityContextHolder.getContext().getAuthentication().getName();
+		goods.getGoods().setSellerId(seller); //新增商品设置商家ID
 		try {
 			goodsService.add(goods);
 			return new Result(true, "增加成功");
@@ -82,15 +101,11 @@ public class GoodsController {
 	 */
 	@RequestMapping("/update")
 	public Result update(@RequestBody Goods goods){
-		//校验是否是当前商家的id		
-		Goods goods2 = goodsService.findOne(goods.getGoods().getId());
-		//获取当前登录的商家ID
-		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
-		//如果传递过来的商家ID并不是当前登录的用户的ID,则属于非法操作
-		if(!goods2.getGoods().getSellerId().equals(sellerId) ||  !goods.getGoods().getSellerId().equals(sellerId) ){
-			return new Result(false, "操作非法");		
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		if(!name.equals(goods.getGoods().getSellerId())){//防止商品不是当前商家的
+			return new Result(false,"非法修改商品");
 		}
-		//
+		
 		try {
 			goodsService.update(goods);
 			return new Result(true, "修改成功");
@@ -110,12 +125,6 @@ public class GoodsController {
 		return goodsService.findOne(id);		
 	}
 	
-	@Autowired
-	private Destination queueSolrDeleteDestination;//用户在索引库中删除记录
-
-	@Autowired
-	private Destination topicPageDeleteDestination;//用于删除静态网页的消息
-
 	/**
 	 * 批量删除
 	 * @param ids
@@ -124,20 +133,34 @@ public class GoodsController {
 	@RequestMapping("/delete")
 	public Result delete(final Long [] ids){
 		try {
-			goodsService.delete(ids);			
-			jmsTemplate.send(queueSolrDeleteDestination, new MessageCreator() {		
+			goodsService.delete(ids);
+			
+/*			//删除solr库中的内容
+			itemSearchService.removeItems(ids);
+			
+			//删除生成的页面
+			itemPageService.removeItemHtml(ids);*/
+			
+			//发送删除solr库内容的消息
+			jmsTemplate.send(queueSolrDeleteDestination,new MessageCreator() {
+				
 				@Override
-				public Message createMessage(Session session) throws JMSException {	
+				public Message createMessage(Session session) throws JMSException {
+					// TODO Auto-generated method stub
 					return session.createObjectMessage(ids);
 				}
 			});
-			//删除页面
-			jmsTemplate.send(topicPageDeleteDestination, new MessageCreator() {		
+			
+			//发送删除页面消息
+			jmsTemplate.send(topicPageDeleteDestination,new MessageCreator() {
+				
 				@Override
-				public Message createMessage(Session session) throws JMSException {	
+				public Message createMessage(Session session) throws JMSException {
+					// TODO Auto-generated method stub
 					return session.createObjectMessage(ids);
 				}
-			});	
+			});
+			
 			return new Result(true, "删除成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -154,42 +177,59 @@ public class GoodsController {
 	 */
 	@RequestMapping("/search")
 	public PageResult search(@RequestBody TbGoods goods, int page, int rows  ){
-				//获取商家ID
-				String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
-				//添加查询条件 
-				goods.setSellerId(sellerId);		
 		return goodsService.findPage(goods, page, rows);		
 	}
 	
-	@Autowired
-	private Destination queueSolrDestination;//用于发送solr导入的消息
-	
-	@Autowired
-	private Destination topicPageDestination;
-
-	@Autowired
-	private JmsTemplate jmsTemplate;
-
+	/**
+	 * 运营商审核状态的修改
+	 * @param ids
+	 * @param status
+	 */
 	@RequestMapping("/updateStatus")
-	public Result updateStatus(Long[] ids,String status){
+	public Result updateStatus(final Long[] ids, String status){
 		try {
 			goodsService.updateStatus(ids, status);
-			//按照SPU ID查询 SKU列表(状态为1)		
-			if(status.equals("1")){//审核通过
-				//静态页生成
-				for(final Long goodsId:ids){
-					jmsTemplate.send(topicPageDestination, new MessageCreator() {						
-						@Override
-						public Message createMessage(Session session) throws JMSException {							
-							return session.createTextMessage(goodsId+"");
+			
+			if("2".equals(status)){
+				//itemSearchService.importItems(ids); //导入solr库
+				
+				// 发送导入solr库的消息
+				jmsTemplate.send(queueSolrCreateDestination,new MessageCreator() {
+					public Message createMessage(Session session) throws JMSException {
+						return session.createObjectMessage(ids);
+					}
+				});
+				
+				
+				for (int i = 0; i < ids.length; i++) {
+					//生成sku商品静态页面
+					//itemPageService.createItemHtml(ids[i]);
+					final Long id = ids[i];
+					jmsTemplate.send(topicPageCreateDestination,new MessageCreator() {
+						public Message createMessage(Session session) throws JMSException {
+							return session.createTextMessage(id+"");
 						}
 					});
-				}				
-			}		
-			return new Result(true, "修改状态成功"); 
+				}
+				
+			}
+			
+			return new Result(true, "审核完成"); 
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return new Result(false, "修改状态失败");
+			return new Result(false, "审核失败"); 
 		}
 	}
+	
+	/*@RequestMapping("/createItemHtml")
+	public Result createItemHtml(Long goodsId){
+		boolean isCreateHtml = itemPageService.createItemHtml(goodsId);
+		
+		if(isCreateHtml){
+			return new Result(true,"生成页面成功");
+		}else{
+			return new Result(false,"生成页面失败");
+		}
+	}*/
 }

@@ -17,9 +17,11 @@
 	<link rel="stylesheet" href="../plugins/angularjs/pagination.css">
 	
     <script type="text/javascript" src="../js/base_pagination.js"></script>
+    <!-- base_pagination之所以放到最前面，是因为第一次登入的时候就要呈现页面，就必然用到分页 -->
     <script type="text/javascript" src="../js/service/brandService.js"></script>
     <script type="text/javascript" src="../js/controller/baseController.js"></script>
     <script type="text/javascript" src="../js/controller/brandController.js"></script>
+    <!-- 每一个controller使用		$controller('baseController',{$scope:$scope});		达到对基础功能的引用-->
     
 </head>
 <body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="brandController" ng-init="searchEntity={}"/>
@@ -78,7 +80,7 @@
 			                      </tbody>
 			                  </table>
 			                  <!--数据列表/-->                        
-							  <tm-pagination conf="paginationConf" />
+							  <tm-pagination conf="paginationConf" /><!-- 分页控件 -->
 							 
                         </div>
                         <!-- 数据表格 /-->

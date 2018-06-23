@@ -28,7 +28,14 @@
 		<!-- 数据库连接池 -->
 		<property name="dataSource" ref="dataSource" />
 		<!-- 加载mybatis的全局配置文件 -->
-		<property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml" />
+		<property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml" /><!-- 通过工厂引入SqlMapConfig.xml配置文件 -->
+		<!-- 整合及加载关系
+			 SqlMapConfig.xml & dataSource =>
+			 sqlSessionFactory			   =>
+			 transactionManager			   =>
+			 web.xml					   =>
+			 servletContextListener
+		-->
 	</bean>
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.pinyougou.mapper" />

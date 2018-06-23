@@ -12,12 +12,13 @@
 	
 
 	<context:component-scan base-package="com.pinyougou.solrutil"></context:component-scan>
-	<!-- solr服务器地址 -->
-	<solr:solr-server id="solrServer" url="http://127.0.0.1:9100/solr" />
+	<!-- 1.solr服务器地址 -->
+	<solr:solr-server id="solrServer" url="http://127.0.0.1:9100/solr/new_core" />
 
    
-	<!-- solr模板，使用solr模板可对索引库进行CRUD的操作 -->
+	<!-- 2.solr模板，使用solr模板可对索引库进行CRUD的操作 -->
 	<bean id="solrTemplate" class="org.springframework.data.solr.core.SolrTemplate">
+		<!-- 模板使用上面的solrServer进行构造 -->
 		<constructor-arg ref="solrServer" />
 	</bean>
 </beans>

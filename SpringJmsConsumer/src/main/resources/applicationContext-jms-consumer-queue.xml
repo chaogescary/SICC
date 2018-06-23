@@ -27,7 +27,7 @@
 		class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg value="queue_text" />
 	</bean>
-	<!-- 我的监听类 -->
+	<!-- 我的监听类，和producer不同的地方，同时模板变为了监听类 -->
 	<bean id="myMessageListener" class="com.sicc.MyMessageListener"></bean>
 	<!-- 消息监听容器 -->
 	<bean

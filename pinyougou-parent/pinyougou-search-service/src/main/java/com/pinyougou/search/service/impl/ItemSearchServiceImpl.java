@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.Criteria;
@@ -27,7 +28,6 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 	
 	@Override
 	public List<TbItem> search(Map searchMap) {
-		// TODO Auto-generated method stub
 		String keyStr = (String) searchMap.get("keywords"); //页面输入的关键词
 		
 		SimpleQuery simpleQuery = new SimpleQuery("*:*");
@@ -70,14 +70,4 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 		solrTemplate.commit();
 	}
 
-	@Override
-	public void importList(List<TbItem> list) {
-		
-	}
-
-	@Override
-	public void deleteByGoodsIds(List<Long> asList) {
-		// TODO Auto-generated method stub
-		
-	}
 }

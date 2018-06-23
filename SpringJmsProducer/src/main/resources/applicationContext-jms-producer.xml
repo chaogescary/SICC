@@ -12,12 +12,12 @@
 		http://www.springframework.org/schema/jms/spring-jms.xsd">
 	<context:component-scan
 		base-package="com.sicc"></context:component-scan>
-	<!-- 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供 -->
+	<!-- connection的工厂对象 -->
 	<bean id="targetConnectionFactory"
 		class="org.apache.activemq.ActiveMQConnectionFactory">
 		<property name="brokerURL" value="tcp://192.168.25.141:61616" />
 	</bean>
-	<!-- Spring用于管理真正的ConnectionFactory的ConnectionFactory -->
+	<!-- Spring用于管理具体工厂的工厂，用于整合上面的具体厂商的工厂 -->
 	<bean id="connectionFactory"
 		class="org.springframework.jms.connection.SingleConnectionFactory">
 		<!-- 目标ConnectionFactory对应真实的可以产生JMS Connection的ConnectionFactory -->
@@ -27,7 +27,7 @@
 	<!-- Spring提供的JMS工具类，它可以进行消息发送、接收等 -->
 	<bean id="jmsTemplate"
 		class="org.springframework.jms.core.JmsTemplate">
-		<!-- 这个connectionFactory对应的是我们定义的Spring提供的那个ConnectionFactory对象 -->
+		<!-- 这个connectionFactory对应的是我们定义的Spring提供的那个ConnectionFactory对象，将其作为成员属性 -->
 		<property name="connectionFactory" ref="connectionFactory" />
 	</bean>
 	<!--这个是队列目的地，点对点的 文本信息 -->

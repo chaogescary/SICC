@@ -77,7 +77,7 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 		);
 	}
     
-	//根据父iD查询所有分类
+	//根据父iD查询所有分类，下面的代码块会用到该函数
 	$scope.findByParentId = function(parentId){
 		itemCatService.findByParentId(parentId).success(
 				function(response){
@@ -85,6 +85,9 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 				}
 		)
 	}
+	
+	
+	
 	
 	$scope.grade = 1;  //默认的顶级分类
 	
@@ -94,15 +97,15 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 	//{id:0}
 	$scope.selectType = function(p_entity){
 		if($scope.grade == 1){  //选择顶级分类
-			$scope.entity_1 = null;
-			$scope.entity_2 = null;
+			$scope.entity_1 = null;//顶级分类面包屑不可点，或者说自身不可点
+			$scope.entity_2 = null;//自然一级分类面包屑也点不了
 		}
 		if($scope.grade == 2){  //选择一级分类
-			$scope.entity_1 = p_entity;
-			$scope.entity_2 = null;
+			$scope.entity_1 = p_entity;//可以点顶级分类，即父分类面包屑
+			$scope.entity_2 = null;//自身不可点
 		}
 		if($scope.grade == 3){	//选择二级分类
-			$scope.entity_2 = p_entity;
+			$scope.entity_2 = p_entity;//同上，同时进入了上面一个分支的递归，所以下面就省略不写了
 		}
 		$scope.findByParentId(p_entity.id);
 	}

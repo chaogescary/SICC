@@ -7,11 +7,16 @@ import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojo.TbGoodsDesc;
 import com.pinyougou.pojo.TbItem;
 
+/**
+ * 由于SPU和SKU具有联动性，为了逻辑上的衔接，故设置Goods大对象
+ *
+ */
 public class Goods implements Serializable {
 
-	private TbGoods goods;	//商品SPU
-	private TbGoodsDesc goodsDesc;	//商品扩展
+	private TbGoods goods;			//商品SPU
 	private List<TbItem> itemList;	//商品SKU
+	private TbGoodsDesc goodsDesc;	//扩展属性
+	
 	public TbGoods getGoods() {
 		return goods;
 	}

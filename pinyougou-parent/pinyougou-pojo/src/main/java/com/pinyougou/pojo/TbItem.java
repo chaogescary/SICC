@@ -46,6 +46,7 @@ public class TbItem implements Serializable{
 
     private String isDefault;
 
+    @Field("item_goodsid")
     private Long goodsId;
 
     private String sellerId;
@@ -63,17 +64,20 @@ public class TbItem implements Serializable{
     @Field("item_seller")
     private String seller;
     
-    //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    /**
+     * 动态域
+     */
     @Dynamic
     @Field("item_spec_*")
     private Map<String,String> specMap;
+    
+    //getter setter
     public Map<String, String> getSpecMap() {
 		return specMap;
 	}
 	public void setSpecMap(Map<String, String> specMap) {
 		this.specMap = specMap;
 	}
-	//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     public Long getId() {
         return id;

@@ -44,10 +44,7 @@ public class SellerController {
 	}
 	
 	/** 
-	* @date 2018年5月29日下午11:22:59
-	* @author Sichao
-	*
-	* @Description: 增加
+	* 该方法由/pinyougou-shop-web/src/main/webapp/register.html发起请求，即商家注册页面
 	* 使用BCrypt算法进行加密存储 
 	*/ 
 	@RequestMapping("/add")

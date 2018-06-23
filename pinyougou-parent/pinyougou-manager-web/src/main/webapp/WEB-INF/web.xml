@@ -21,13 +21,14 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+	<!-- 前端控制器，本质是servlet,通过启动服务器时加载它，连带加载springmvc.xml-->
 	<servlet>
 		<servlet-name>springmvc</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<!-- 指定加载的配置文件 ，通过参数contextConfigLocation加载 -->
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:spring/springmvc.xml</param-value>
+			<param-value>classpath:spring/spring-*.xml</param-value>
 		</init-param>
 	</servlet>
 
@@ -37,7 +38,7 @@
 	</servlet-mapping>
 
 	<!-- 配置security -->
-	<context-param>
+	<context-param><!-- context-param比任何servlet创建时间都早，可以先用来加载优先级较高的spring-security -->
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:spring/spring-security.xml</param-value>
 	</context-param>

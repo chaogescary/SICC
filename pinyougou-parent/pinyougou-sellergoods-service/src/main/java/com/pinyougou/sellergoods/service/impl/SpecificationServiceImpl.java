@@ -124,9 +124,12 @@ public class SpecificationServiceImpl implements SpecificationService {
 
 		@Override
 		public void add(Specification specification) {
-			specificationMapper.insert(specification.getSpecification());//插入规格	
+			//插入规格，经过这一步，已经将自增的主键id拿到，并且赋予给了specification对象了
+			specificationMapper.insert(specification.getSpecification());
 			//循环插入规格选项
-			for(TbSpecificationOption specificationOption:specification.getSpecificationOptionList()){	specificationOption.setSpecId(specification.getSpecification().getId());//设置规格ID		specificationOptionMapper.insert(specificationOption);		
+			for(TbSpecificationOption specificationOption:specification.getSpecificationOptionList()){	
+				//设置规格ID		specificationOptionMapper.insert(specificationOption);		
+				specificationOption.setSpecId(specification.getSpecification().getId());
 			}		
 		}
 

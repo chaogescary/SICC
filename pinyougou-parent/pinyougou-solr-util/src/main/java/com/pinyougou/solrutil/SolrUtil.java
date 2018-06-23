@@ -28,14 +28,26 @@ public class SolrUtil {
 	 * 导入商品数据
 	 */
 	public void importItemData(){
+		//创建实例模板对象
 		TbItemExample example=new TbItemExample();
+		//创建规则对象
 		Criteria criteria = example.createCriteria();
+		//创建子句
 		criteria.andStatusEqualTo("1");//已审核
+		//执行查询
 		List<TbItem> itemList = itemMapper.selectByExample(example);
 		System.out.println("===商品列表===");
 		for(TbItem item:itemList){
-			Map specMap= JSON.parseObject(item.getSpec());//将spec字段中的json字符串转换为map
-			item.setSpecMap(specMap);//给带注解的字段赋值
+			/**
+			 * 由于spec字段为json字符串，需要使用JSON.parseObject转化为对象先
+			 */
+			Map specMap= JSON.parseObject(item.getSpec());
+			
+			/**
+			 * 此处可返回到/pinyougou-pojo/src/main/java/com/pinyougou/pojo/TbItem.java
+			 * 里查看spec字段，是设置为动态域的形式
+			 */
+			item.setSpecMap(specMap);
 			System.out.println(item.getTitle());			
 		}		
 		
@@ -44,10 +56,22 @@ public class SolrUtil {
 		
 		System.out.println("===结束===");			
 	}	
-
+	
 	public static void main(String[] args) {
+		/**
+		 * 由于本身是jar包，无法通过war包web.xml listener加载的方式加载配置文件，
+		 * 所以需要使用ApplicationContext对象进行资源访问，即加载配置文件
+		 */
 		ApplicationContext context=new ClassPathXmlApplicationContext("classpath*:spring/applicationContext*.xml");
+		
+		/**
+		 * 因为SolrUtil类使用了@Component注解
+		 * 所以实际上在上一行已经被spring创建了一个对象了，所以71行的写法是错误的
+		 * 应该直接从spring上下文对象，即从ApplicationContext对象中取出
+		 */
 		SolrUtil solrUtil=  (SolrUtil) context.getBean("solrUtil");
+//		SolrUtil solrUtil = new SolrUtil();
+		//把数据库数据导入到solr
 		solrUtil.importItemData();
 	}
 }

@@ -22,7 +22,7 @@ app.controller('baseController', function($scope) {
 	$scope.selectIds = [];// 选中的ID集合
 
 	// 更新复选
-	$scope.updateSelection = function($event, id) {
+	$scope.updateSelection = function($event, id) {//传入$event对象，使用$event.target即可获取当前DOM对象
 		if ($event.target.checked) {// 如果是被选中,则增加到数组
 			$scope.selectIds.push(id);
 		} else {

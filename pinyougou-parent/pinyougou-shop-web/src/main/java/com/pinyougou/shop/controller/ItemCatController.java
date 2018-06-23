@@ -112,13 +112,11 @@ public class ItemCatController {
 	public PageResult search(@RequestBody TbItemCat itemCat, int page, int rows  ){
 		return itemCatService.findPage(itemCat, page, rows);		
 	}
-	
-	/** 
-	* @date 2018年5月30日下午7:58:16
-	* @author Sichao
-	*
-	* @Description: 商品分类查询 
-	*/ 
+		
+
+	/**
+	 * 根据父分类id查找，返回对应的一堆子分类
+	 */
 	@RequestMapping("/findByParentId")
 	public List<TbItemCat> findByParentId(
 			@RequestParam(value="parentId",required=false,defaultValue="0") Long parentId){				

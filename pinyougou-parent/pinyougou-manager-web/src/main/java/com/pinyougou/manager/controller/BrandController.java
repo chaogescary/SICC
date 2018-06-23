@@ -12,20 +12,23 @@ import com.pinyougou.sellergoods.service.BrandService;
 
 import entity.PageResult;
 import entity.Result;
+
 /**
- * controller
- * @author Administrator
- *
+ *使用@RestController,相当于@Controller和@ResponseBody的结合，返回json数据不需要在方法前面加@ResponseBody 
+ *注解了，但使用@RestController这个注解，就不能返回jsp,html页面，视图解析器无法解析jsp,html页面了
  */
 @RestController
 @RequestMapping("/brand")
 public class BrandController {
 
+	/**
+	 * 使用@Reference注入，通过dubbo获取服务接口
+	 */
 	@Reference
 	private BrandService brandService;
 	
 	/**
-	 * 返回全部列表
+	 * 返回全部列表(由逆向工程生成的默认方法)
 	 * @return
 	 */
 	@RequestMapping("/findAll")
@@ -35,7 +38,7 @@ public class BrandController {
 	
 	
 	/**
-	 * 返回全部列表
+	 * 返回全部列表，实用方法
 	 * @return
 	 */
 	@RequestMapping("/findPage")
@@ -101,12 +104,8 @@ public class BrandController {
 		}
 	}
 	
-		/**
+	/**
 	 * 查询+分页
-	 * @param brand
-	 * @param page
-	 * @param rows
-	 * @return
 	 */
 	@RequestMapping("/search")
 	public PageResult search(@RequestBody TbBrand brand, int page, int rows  ){
@@ -114,10 +113,7 @@ public class BrandController {
 	}
 	
 	/** 
-	* @date 2018年5月29日上午11:57:25
-	* @author Sichao
-	*
-	* @Description: 支持前端Select2展示 
+	* @Description: 支持前端Select2展示,返回List<Map> 其中,Map为brand表的字段 <id,name> 
 	*/ 
 	@RequestMapping("/selectOptionList")
 	public List<Map> selectOptionList(){

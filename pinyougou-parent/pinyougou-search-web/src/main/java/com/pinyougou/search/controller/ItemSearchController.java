@@ -12,17 +12,14 @@ import com.pinyougou.pojo.TbItem;
 import com.pinyougou.search.service.ItemSearchService;
 
 @RestController
-
-@RequestMapping("/itemsearch")
-
+@RequestMapping("/itemSearch")
 public class ItemSearchController {
-	
+
 	@Reference
 	private ItemSearchService itemSearchService;
 	
 	@RequestMapping("/search")
-	public List<TbItem> search(@RequestBody Map searchMap ){
-		return  itemSearchService.search(searchMap);
-	}	
-
+	public List<TbItem> search(@RequestBody Map map){
+		return itemSearchService.search(map);
+	}
 }

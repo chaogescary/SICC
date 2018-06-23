@@ -252,7 +252,8 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
     	for(var i=0;i<list.length;i++){
     		var oldRow= list[i];
     		for(var j=0;j<conlumnValues.length;j++){
-    			var newRow= JSON.parse( JSON.stringify( oldRow )  );//深克隆
+    			//通过JSON.parse和JSON.stringify的组合实现深拷贝
+    			var newRow= JSON.parse( JSON.stringify( oldRow )  );
     			newRow.spec[columnName]=conlumnValues[j];
     			newList.push(newRow);
     		}    		 

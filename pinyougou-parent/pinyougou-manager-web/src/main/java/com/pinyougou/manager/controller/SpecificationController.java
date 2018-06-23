@@ -116,7 +116,7 @@ public class SpecificationController {
 	
 	@RequestMapping("/add")
 	public Result add(@RequestBody Specification specification){
-		try {
+		try {//通过try catch巧妙地将结果分支
 			specificationService.add(specification);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {

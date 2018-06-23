@@ -34,9 +34,9 @@
 	</http>
 	<!-- 认证管理器 -->
 	<authentication-manager>
-		<!-- 认证提供者 -->
+		<!-- 指定自有的认证提供类，而不是用默认，将在后面给出 -->
 		<authentication-provider user-service-ref="userDetailService">
-			<!-- 增加这行是为了支持密码加密 -->
+			<!-- 开启密码加密支持，加密内在下面给出，使用的是BCryptPasswordEncoder类 -->
 			<password-encoder ref="passwordEncoder"></password-encoder>
 		</authentication-provider>
 	</authentication-manager>
@@ -49,7 +49,7 @@
 		<beans:property name="sellerService" ref="sellerService"></beans:property>
 	</beans:bean>
 
-	<!-- 引用dubbo 服务 -->
+	<!-- 需要单独，重新向zookeeper注册成为消费者 -->
 	<dubbo:application name="pinyougou-shop-web" />
 	<dubbo:registry address="zookeeper://192.168.25.141:2181" />
 	<dubbo:reference id="sellerService"

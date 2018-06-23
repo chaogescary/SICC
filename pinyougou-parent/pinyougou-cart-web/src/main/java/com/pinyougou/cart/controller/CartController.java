@@ -62,11 +62,14 @@ public class CartController {
 	
 	/**
 	 * 添加商品到购物车
-	 * @param request
-	 * @param response
-	 * @param itemId
-	 * @param num
-	 * @return
+	 * 跨域:
+	 * 1.Access-Control-Allow-Origin
+	 * 2.Access-Control-Allow-Credentials
+	 * 3.withCredentials
+	 * 
+	 * 备注:
+	 * 其中1、2可以用下面的注解代替
+	 * @CrossOrigin(origins="http://localhost:9105",allowCredentials="true")
 	 */
 	@RequestMapping("/addGoodsToCartList")
 	public Result addGoodsToCartList(Long itemId,Integer num){

@@ -4,6 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
+	<!-- 该段表明静态资源白名单，连过滤器都不用走 -->
 	<http pattern="/login.html" security="none"></http>
 	<http pattern="/css/**" security="none"></http>
 	<http pattern="/js/**" security="none"></http>
@@ -12,17 +13,19 @@
 
 	<!-- 页面的拦截规格 use-expressions:默认启用SPEL表达式 需要将 access="hasRole('ROLE_USER')" -->
 	<http use-expressions="false">
-		<!-- 当前用户必须有ROLE_USER的角色才可以访问根目录及所属子目录的资源 -->
+		<!-- /**表示拦截所有 -->
 		<intercept-url pattern="/**" access="ROLE_USER" />
-		<!-- 开启表单登录功能，会有默认登录页 -->
+		<!-- 该标签表明开启表单登录功能，会有默认登录页，同时请求参数登陆名称指定为username，密码为password-->
 		<form-login username-parameter="username" password-parameter="password" login-page="/login.html" default-target-url="/admin/index.html" always-use-default-target="true"/>
 		<!--关闭跨站请求的检测-->
 		<csrf disabled="true"/>
 		
 		<headers>
-<!-- 	//DENY：浏览器拒绝当前页面加载任何Frame页面
-   		//SAMEORIGIN：frame页面的地址只能为同源域名下的页面
-    	//ALLOW-FROM：origin为允许frame加载的页面地址。 -->
+			<!-- 	//DENY：浏览器拒绝当前页面加载任何Frame页面
+			   		//SAMEORIGIN：frame页面的地址只能为同源域名下的页面
+			    	//ALLOW-FROM：origin为允许frame加载的页面地址。 
+			    	//一般用于XXX后台管理页面，多为框架式布局，SAMEORIGIN用于放行子页面
+			-->
 			<frame-options policy="SAMEORIGIN"/>
 		</headers>
 		<!-- 加此配置后，会自动的产生退出登录的地址/logout -->
@@ -34,7 +37,7 @@
 		<authentication-provider>
 			<user-service>
 				<!-- 配置当前系统的用户 authorities该用户属于哪个角色 -->
-				<user name="admin" password="123" authorities="ROLE_USER" />
+				<user name="admin" password="admin" authorities="ROLE_USER" />
 			</user-service>
 		</authentication-provider>
 	</authentication-manager>

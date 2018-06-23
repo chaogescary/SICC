@@ -2,6 +2,10 @@ package entity;
 
 import java.io.Serializable;
 
+/**
+ * 表现层携带CRUD操作后提示信息的载体
+ *
+ */
 public class Result implements Serializable{
 
 	public Result(boolean success, String message) {

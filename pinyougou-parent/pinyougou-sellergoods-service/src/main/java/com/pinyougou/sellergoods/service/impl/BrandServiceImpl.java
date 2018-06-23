@@ -16,9 +16,9 @@ import com.pinyougou.sellergoods.service.BrandService;
 
 import entity.PageResult;
 
+
 /**
- * 服务实现层
- * @author Administrator
+ * dubbo的@Service
  *
  */
 @Service
@@ -43,7 +43,7 @@ public class BrandServiceImpl implements BrandService {
 	 */
 	@Override
 	public PageResult findPage(int pageNum, int pageSize) {
-		PageHelper.startPage(pageNum, pageSize);		
+		PageHelper.startPage(pageNum, pageSize);//通过PageHelper拦截器配置，对Page对象进行初始化		
 		Page<TbBrand> page=   (Page<TbBrand>) brandMapper.selectByExample(null);
 		return new PageResult(page.getTotal(), page.getResult());
 	}

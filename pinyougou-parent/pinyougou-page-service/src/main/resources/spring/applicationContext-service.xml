@@ -9,9 +9,13 @@
         http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
         
-        <context:component-scan base-package="com.pinyougou.page.service.impl"/>   
-    <bean id="freemarkerConfig"
-		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <context:component-scan base-package="com.pinyougou.page.service.impl"/>
+        
+        <context:property-placeholder location="classpath:properties/page.properties" />
+
+	<!-- spring的设计模式是按照类对象来存储的，通过的是bean标签， 而使用property来存储set,即该bean的属性 -->
+    	<bean id="freemarkerConfig"
+	class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 		<property name="templateLoaderPath" value="/WEB-INF/ftl/" />
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>

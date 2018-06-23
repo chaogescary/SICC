@@ -4,7 +4,7 @@
   <artifactId>pinyougou-parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <!-- 集中定义依赖版本号 -->
+  <!-- 集中定义依赖版本号 --><!-- <version>${xxx}</version> -->
 	<properties>
 		<junit.version>4.12</junit.version>
 		<spring.version>4.2.4.RELEASE</spring.version>
@@ -299,5 +299,8 @@
   	<module>pinyougou-cart-web</module>
   	<module>pinyougou-order-interface</module>
   	<module>pinyougou-order-service</module>
+  	<module>pinyougou-pay-interface</module>
+  	<module>pinyougou-pay-service</module>
+  	<module>pinyougou-page-web</module>
   </modules>
 </project>

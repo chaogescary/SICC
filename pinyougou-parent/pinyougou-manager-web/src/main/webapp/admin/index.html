@@ -24,6 +24,7 @@
     <!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
     <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
 	<script type="text/javascript" src="../js/base.js"></script>
+	<!-- 由于首页不涉及到分页，所以引入base.js，而不是base_pagination.js -->
 	<script type="text/javascript" src="../js/service/loginService.js"></script>
 	<script type="text/javascript" src="../js/controller/loginController.js"></script> 
     <!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
@@ -40,6 +41,7 @@
  
 </head>
 
+<!-- ng-app为根元素，每个angular应用都应该有且只有一个根元素 -->
 <body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="loginController" ng-init="showLoginName ()">
 
     <div class="wrapper">
